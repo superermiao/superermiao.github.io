@@ -200,4 +200,18 @@
 <script src="/js/index.js"></script>
 <script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
+<script src="/js/gitment.js"></script>
+<script>
+    var gitment = new Gitment({
+        id: 'angular的踩坑之旅-状态管理',
+        owner: 'superermiao',
+        repo: 'superermiao-github-blog',
+        oauth: {
+            client_id: 'e25e8915aa0bfb5a1dca://github.com/settings/applications/new',
+            client_secret: '9b7030c1fd53b5995082ce8f17c99916979ff7b1://github.com/settings/applications/new',
+        },
+    })
+    gitment.render('comment-container')
+</script>
+
 </html>
