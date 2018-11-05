@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        angular的踩坑之旅-你应该知道angular中的变化检测机制 - undefined
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> make code to be elegant </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>super二喵</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#快速开始"><span class="toc-text">快速开始</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#翻译来源"><span class="toc-text">翻译来源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#视图作为核心概念-View-as-a-core-concept"><span class="toc-text">视图作为核心概念(View as a core concept)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#视图状态-View-state"><span class="toc-text">视图状态(View state)</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> make code to be elegant </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        angular的踩坑之旅-你应该知道angular中的变化检测机制
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2018-10-31 15:43:48</span></span>
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h2 id="快速开始"><a href="#快速开始" class="headerlink" title="快速开始"></a>快速开始</h2><h3 id="翻译来源"><a href="#翻译来源" class="headerlink" title="翻译来源"></a>翻译来源</h3><pre><code>本文翻译至https://blog.angularindepth.com/everything-you-need-to-know-about-change-detection-in-angular-8006c51d206f
+</code></pre><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><pre><code>如果像我一样想要全面了解Angular中的变化检测机制，你将不得不探索其源码，毕竟网上没有太多的可靠信息。
+大多数文章都提到每个组件都有自己的变更检测器，负责检查组件，但它们不会超出这个范围，主要关注不可变的用例和变更检测策略。
+本文为您提供了解为什么使用不可变项的用例以及更改检测策略如何影响检查所需的信息。
+此外，您将从本文中学到的内容将使您自己能够提出各种性能优化方案。
+本文由两部分组成。
+第一部分是非常技术性的并且包含很多来源的链接。它详细介绍了变化检测机制在引擎下如何工作。本文内容是基于4.0.1的Angular版本。（我翻译这篇文章时，已更新到Angular7，后续 会做出对比）。
+在Angular版本与Angular2.4.1的版本中，如何在浏览器引擎下实现变更检测机制的方式有些不同。
+有兴趣的话，你可以在这个: 
+[stackoverflow答案](https://stackoverflow.com/questions/42643389/why-do-we-need-ngdocheck/42807309#42807309)中阅读一些关于它是如何工作的。  
+</code></pre><h3 id="视图作为核心概念-View-as-a-core-concept"><a href="#视图作为核心概念-View-as-a-core-concept" class="headerlink" title="视图作为核心概念(View as a core concept)"></a>视图作为核心概念(View as a core concept)</h3><pre><code>在Angular官方教程中已经提到Angular应用程序是一个组件树，然而，angular在底层实现中使用view作为其更低层次的抽象。
+视图(view)和组件(component)之间有直接的联系---一个视图(view)对应一个组件(component)，反之亦然。
+每个视图(view)在 组件(component) 属性中都包含了与之相关联的组件类实例的引用。
+所有操作（如属性检查和DOM更新）都在视图(view)上执行，因此,从技术上来说，angular应用是视图树更为准确，而组件可以被描述为视图的更高级概念。
+在[这里](https://github.com/angular/angular/blob/6b79ab5abec8b5a4b43d563ce65f032990b3e3bc/packages/core/src/linker/view_ref.ts#L31)你可以读到有关视图的描述:
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">A View is a fundamental building block of the application UI. It is thesmallest grouping of Elements <span class="built_in">which</span> are created and destroyed together.</span><br><span class="line">Properties of elements <span class="keyword">in</span> a View can change, but the structure (number andorder) of elements <span class="keyword">in</span> a View cannot. Changing the structure of Elements canonly be <span class="keyword">done</span> by inserting, moving or removing nested Views via aViewContainerRef. Each View can contain many View Containers.</span><br><span class="line">(译者注： 上述引用翻译视图是应用程序 UI 的基本构件。视图是最小的元素组，这些元素被一起创建和销毁。视图中元素的属性会改变， 但是视图中元素的结构(数量和排序)却不会改变。 要更改元素的结构，只能通过使用 ViewContainerRef 进行插入、移动或者删除嵌套视图来完成。每个视图可以包含很多视图容器。)</span><br></pre></td></tr></table></figure>
+<pre><code>本文中，我将要交替使用 ‘组件视图’ 和 ‘组件’两个概念。
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">It’s important to note here that all articles on the web and answers on StackOverflow regarding change detection refer to the View I’m describing here as Change Detector Object or ChangeDetectorRef. In reality, there’s no separate object <span class="keyword">for</span> change detection and View is what change detection runs on.</span><br><span class="line">(译者注：这里需要注意的是: 网上变更检测相关的所有文章以及 StackOverflow 上的回答都把我在这里描述的视图(View)作为变更（脏值）检测器对象 或 ChangeDetectorRef。事实上并没有单独的对象来进行变更检测，变更检测就是在视图上运行。)</span><br></pre></td></tr></table></figure>
+<pre><code>每个视图可以通过[nodes](https://github.com/angular/angular/blob/6b79ab5abec8b5a4b43d563ce65f032990b3e3bc/packages/core/src/view/types.ts#L316)属性链接子视图，因此可以对子视图执行操作。
+</code></pre><h3 id="视图状态-View-state"><a href="#视图状态-View-state" class="headerlink" title="视图状态(View state)"></a>视图状态(View state)</h3><pre><code>每个视图都有一个状态，它扮演着非常重要的角色，因为根据它的值，Angular决定是否对视图及其所有子项运行或跳过变更（脏值）检测。状态的值可能有很多个，但以下是与本文相关的：
+1.FirstCheck
+2.ChecksEnabled
+3.Errored
+4.Destroyed
+当ChecksEnabled是false或者视图(View)是在Errored或者Destroyed状态时，变更（脏值）检测就会跳过对于视图以及该视图所有子视图的检测。
+</code></pre>
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.png">
+        <p> 感谢鼓励 </p>
+    </div>
+</div>
+        
+        <div id="comment-container">
+        </div>
+    </div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://github.com/superermiao">@2018 superermiao</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/gitment.js"></script>
+<script>
+    var gitment = new Gitment({
+        id: 'angular的踩坑之旅-你应该知道angular中的变化检测机制',
+        owner: 'superermiao',
+        repo: 'https://github.com/superermiao/Comments',
+        oauth: {
+            client_id: 'e25e8915aa0bfb5a1dca',
+            client_secret: '9b7030c1fd53b5995082ce8f17c99916979ff7b1',
+        },
+    })
+    gitment.render('comment-container')
+</script>
+
+</html>
