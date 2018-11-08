@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+        angular的踩坑之旅-你应该知道angular中的变化检测机制 - undefined
+        
+    </title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/aircloud.css">
+    <link rel="stylesheet" href="/css/gitment.css">
+    <!--<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">-->
+    <link href="//at.alicdn.com/t/font_620856_pl6z7sid89qkt9.css" rel="stylesheet" type="text/css">
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+<body>
+
+<div class="site-nav-toggle" id="site-nav-toggle">
+    <button>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+        <span class="btn-bar"></span>
+    </button>
+</div>
+
+<div class="index-about">
+    <i> make code to be elegant </i>
+</div>
+
+<div class="index-container">
+    
+    <div class="index-left">
+        
+<div class="nav" id="nav">
+    <div class="avatar-name">
+        <div class="avatar">
+            <img src="/img/avatar.jpg" />
+        </div>
+        <div class="name">
+            <i>super二喵</i>
+        </div>
+    </div>
+    <div class="contents" id="nav-content">
+        <ul>
+            <li >
+                <a href="/">
+                    <i class="iconfont icon-shouye1"></i>
+                    <span>主页</span>
+                </a>
+            </li>
+            <li >
+                <a href="/tags">
+                    <i class="iconfont icon-biaoqian1"></i>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li >
+                <a href="/archives">
+                    <i class="iconfont icon-guidang2"></i>
+                    <span>存档</span>
+                </a>
+            </li>
+            <li >
+                <a href="/about/">
+                    <i class="iconfont icon-guanyu2"></i>
+                    <span>关于</span>
+                </a>
+            </li>
+            
+            <li>
+                <a id="search">
+                    <i class="iconfont icon-sousuo1"></i>
+                    <span>搜索</span>
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+    
+        <div id="toc" class="toc-article">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#快速开始"><span class="toc-text">快速开始</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#翻译来源"><span class="toc-text">翻译来源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#视图作为核心概念-View-as-a-core-concept"><span class="toc-text">视图作为核心概念(View as a core concept)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#视图状态-View-state"><span class="toc-text">视图状态(View state)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#变更（脏值）检测操作-Change-detection-operations"><span class="toc-text">变更（脏值）检测操作(Change detection operations)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#探索含义"><span class="toc-text">探索含义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#detach"><span class="toc-text">detach</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#reattach"><span class="toc-text">reattach</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#markForCheck"><span class="toc-text">markForCheck</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#detectChanges"><span class="toc-text">detectChanges</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#checkNoChanges"><span class="toc-text">checkNoChanges</span></a></li></ol></li></ol>
+</div>
+    
+</div>
+
+
+<div class="search-field" id="search-field">
+    <div class="search-container">
+        <div class="search-input">
+            <span id="esc-search"> <i class="icon-fanhui iconfont"></i></span>
+            <input id="search-input"/>
+            <span id="begin-search">搜索</span>
+        </div>
+        <div class="search-result-container" id="search-result-container">
+
+        </div>
+    </div>
+</div>
+        <div class="index-about-mobile">
+            <i> make code to be elegant </i>
+        </div>
+    </div>
+    
+    <div class="index-middle">
+        <!-- Main Content -->
+        
+
+
+<div class="post-container">
+    <div class="post-title">
+        angular的踩坑之旅-你应该知道angular中的变化检测机制
+    </div>
+
+    <div class="post-meta">
+        <span class="attr">发布于：<span>2018-11-08 11:19:26</span></span>
+        
+        </span>
+        <span class="attr">访问：<span id="busuanzi_value_page_pv"></span>
+</span>
+</span>
+    </div>
+    <div class="post-content ">
+        <h2 id="快速开始"><a href="#快速开始" class="headerlink" title="快速开始"></a>快速开始</h2><h3 id="翻译来源"><a href="#翻译来源" class="headerlink" title="翻译来源"></a>翻译来源</h3><p>本文翻译至<a href="https://blog.angularindepth.com/everything-you-need-to-know-about-change-detection-in-angular-8006c51d206f" target="_blank" rel="noopener">https://blog.angularindepth.com/everything-you-need-to-know-about-change-detection-in-angular-8006c51d206f</a></p>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>如果像我一样想要全面了解Angular中的变化检测机制，你将不得不探索其源码，毕竟网上没有太多的靠信息。<br>大多数文章都提到每个组件都有自己的变更检测器，负责检查组件，但它们不会超出这个范围，主要关不可变的用例和变更检测策略。<br>本文为您提供了解为什么使用不可变项的用例以及更改检测策略如何影响检查所需的信息。<br>此外，您将从本文中学到的内容将使您自己能够提出各种性能优化方案。<br>本文由两部分组成。<br>第一部分是非常技术性的并且包含很多来源的链接。它详细介绍了变化检测机制在引擎下如何工作。本内容是基于4.0.1的Angular版本。（我翻译这篇文章时，已更新到Angular7，后续 会做出对比）。<br>在Angular版本与Angular2.4.1的版本中，如何在浏览器引擎下实现变更检测机制的方式有些不同。<br>有兴趣的话，你可以在这个:<br><a href="https://stackoverflow.com/questions/42643389/why-do-we-need-ngdocheck/42807309#4287309" target="_blank" rel="noopener">stackoverflow答案</a>中阅读一些关于它是如何工作的。  </p>
+<h3 id="视图作为核心概念-View-as-a-core-concept"><a href="#视图作为核心概念-View-as-a-core-concept" class="headerlink" title="视图作为核心概念(View as a core concept)"></a>视图作为核心概念(View as a core concept)</h3><p>在Angular官方教程中已经提到Angular应用程序是一个组件树，然而，angular在底层实现中使用vie作为其更低层次的抽象。<br>视图(view)和组件(component)之间有直接的联系—一个视图(view)对应一个组件(component)，之亦然。<br>每个视图(view)在 组件(component) 属性中都包含了与之相关联的组件类实例的引用。<br>所有操作（如属性检查和DOM更新）都在视图(view)上执行，因此,从技术上来说，angular应用是视树更为准确，而组件可以被描述为视图的更高级概念。<br>在<a href="https://github.com/angular/angular/blob/6b79ab5abec8b5a4b43d563ce65f032990b3e3bc/packages/core/src/linker/view_ref.ts#L31" target="_blank" rel="noopener">这里</a>你可以读到有关视图的描述:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">A View is a fundamental building block of the application UI. It is thesmallestgrouping of Elements <span class="built_in">which</span> are created and destroyed together.</span><br><span class="line">Properties of elements <span class="keyword">in</span> a View can change, but the structure (number andorder) ofelements <span class="keyword">in</span> a View cannot. Changing the structure of Elements canonly be <span class="keyword">done</span> byinserting, moving or removing nested Views via aViewContainerRef. Each View cancontain many View Containers.</span><br><span class="line">(译者注： 上述引用翻译视图是应用程序 UI 的基本构件。视图是最小的元素组，这些元素被一起创和销毁。视图中元素的属性会改变， 但是视图中元素的结构(数量和排序)却不会改变。 要更改元素结构，只能通过使用 ViewContainerRef 进行插入、移动或者删除嵌套视图来完成。每个视图可以包很多视图容器。)</span><br></pre></td></tr></table></figure></p>
+<p>本文中，我将要交替使用 ‘组件视图’ 和 ‘组件’两个概念。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">It’s important to note here that all articles on the web and answers onStackOverflow regarding change detection refer to the View I’m describing here asChange Detector Object or ChangeDetectorRef. In reality, there’s no separate objectfor change detection and View is what change detection runs on.</span><br><span class="line">(译者注：这里需要注意的是: 网上变更检测相关的所有文章以及 StackOverflow 上的回答都把我在里描述的视图(View)作为变更（脏值）检测器对象 或 ChangeDetectorRef。事实上并没有单独的对来进行变更检测，变更检测就是在视图上运行。)</span><br></pre></td></tr></table></figure></p>
+<p>每个视图可以通过<a href="https://github.com/angular/angular/blob/6b79ab5abec8b5a4b43d563ce65f032990b3e3bc/pckages/core/src/view/types.ts#L316" target="_blank" rel="noopener">nodes</a>属性链接子视图，因此可以对子视图执行操作。</p>
+<h3 id="视图状态-View-state"><a href="#视图状态-View-state" class="headerlink" title="视图状态(View state)"></a>视图状态(View state)</h3><p>  每个视图都有一个状态，它扮演着非常重要的角色，因为根据它的值，Angular决定是否对视图及其所子项运行或跳过变更（脏值）检测。状态的值可能有很多个，但以下是与本文相关的：<br>  1.FirstCheck<br>  2.ChecksEnabled<br>  3.Errored<br>  4.Destroyed<br>  当ChecksEnabled是false或者视图(View)是在Errored或者Destroyed状态时，变更（脏值）检测就跳过对于视图以及该视图所有子视图的检测。默认所有的视图会被初始化为 ChecksEnabled, 除非使了 ChangeDetectionStrategy.OnPush。稍后将详细介绍。这些状态可以组合，譬如一个视图(View可以同时设置FirstCheck和ChecksEnabled两个状态。<br>  Angular有一系列高级的概念来操纵视图。我已经在<a href="https://link.jianshu.com/t=https%3A%2F%2Fblog.angularindepthcom%2Fexploring-angular-dom-abstractions-80b3ebcfc02" target="_blank" rel="noopener">这里</a>写了一些，其中一个概念是<a href="https://link.jianshu.com/t=https%3A%2F%2Fgithub.com%2Fangular%2Fangular%2Fblob%2F6b79ab5abec8b5a4b43d563ce65032990b3e3bc%2Fpackages%2Fcore%2Fsrc%2Fview%2Frefs.ts%23L219" target="_blank" rel="noopener">ViewRef</a>,它封装了<a href="https://github.com/angular/angular/blob/6b79ab5abec8b5a4b43d563ce65f032990b3e3bc/pckages/core/src/view/refs.ts#L239" target="_blank" rel="noopener">底层的组件图</a>并且有个恰当命名的方法 <a href="https://githubcom/angular/angular/blob/6b79ab5abec8b5a4b43d563ce65f032990b3e3bc/packages/core/srcview/refs.ts#L239" target="_blank" rel="noopener">detectChanges</a> 。 当异步事件发生时， Angular 会在最顶层的 ViewRef <a href="https://githubcom/angular/angular/blob/6b79ab5abec8b5a4b43d563ce65f032990b3e3bc/packages/core/srcapplication_ref.ts#L552." target="_blank" rel="noopener">触发变更检测</a> ， 对最顶层的 ViewRef 执行完变更检测后，对它的子视图执行变更测。<br>  你可以使用ChangeDetectorRef在组件的构造函数中注入viewRef:<br><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AppComponent &#123;</span><br><span class="line"><span class="keyword">constructor</span>(<span class="params">cd: ChangeDetectorRef</span>) &#123; ... &#125;</span><br></pre></td></tr></table></figure></p>
+<p>可以从这个类的定义中看到：<br><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">declare</span> <span class="keyword">abstract</span> <span class="keyword">class</span> ChangeDetectorRef &#123;</span><br><span class="line"><span class="keyword">abstract</span> checkNoChanges(): <span class="built_in">void</span>;</span><br><span class="line"><span class="keyword">abstract</span> detach(): <span class="built_in">void</span>;</span><br><span class="line"><span class="keyword">abstract</span> detectChanges(): <span class="built_in">void</span>;</span><br><span class="line"><span class="keyword">abstract</span> markForCheck(): <span class="built_in">void</span>;</span><br><span class="line"><span class="keyword">abstract</span> reattach(): <span class="built_in">void</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">abstract</span> <span class="keyword">class</span> ViewRef <span class="keyword">extends</span> ChangeDetectorRef &#123;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="变更（脏值）检测操作-Change-detection-operations"><a href="#变更（脏值）检测操作-Change-detection-operations" class="headerlink" title="变更（脏值）检测操作(Change detection operations)"></a>变更（脏值）检测操作(Change detection operations)</h3><p> 负责视图变更（脏值）检测的主要逻辑存在于checkAndUpdateView函数中。其大部分功能都集中在子件视图的操作上。这个函数会被从宿主组件开始的每个组件递归调用， 意思是 当递归树展开时子组件在下次调用时成为父组件。<br> 对于某一特定的视图，该函数按照如下顺序执行操作：<br> 1.如果视图是第一次检测， 设置 ViewState.firstCheck 为 true 。如果之前已经检测过， 则设为  false 。<br> 2.检查并更新子组件或子指令的输入属性。<br> 3.更新 子视图变更检测状态(变更检测策略实现的一部分)<br> 4.对嵌套视图 (embedded views) 执行变更检测 (重复列表中的步骤)<br> 5.如果绑定改变， 调用 子组件的 OnChanges 生命周期钩子<br> 6.调用 子组件的 OnInit 和 ngDoCheck(OnInit只会在第一次检测期间调用)<br> 7.更新 子视图组件实例的 ContentChildren 查询表<br> 8.调用 子组件实例的 AfterContentInit 和 AfterContentChecked 生命周期钩子(AfterContentInit 只会在第一次检测期间调用)<br> 9.如果当前视图 (current view) 组件实例的属性发生改变， 为 当前视图 更新DOM插值<br> 10.对子视图 执行变更检测 (重复列表中的步骤)<br> 11.更新 当前视图组件实例的 ViewChildren 查询表<br> 12.调用 子组件实例的 AfterViewInit 和 AfterViewChecked 生命周期钩子(AfterViewInit 只在一次检测期间调用)<br> 13.更新视图检测状态为禁用 (变更检测策略实现的一部分)<br> 基于上面的操作列表， 有几项需要强调:<br> 1.在检查子视图之前，Angular会先触发子组件的onChanges ，即使子视图不进行脏值检测onChanges也会被触发。这一条很重要，我们将在文章的第二部分看到如何利用这些知识。<br> 2.视图的DOM更新是作为(变更)脏值检测机制的一部分存在的，也就是说如果组件没有被检测，即使模中使用的组件属性发生更改，DOM也不会更新（我这里提到的DOM更新实际上是插值表达式的更新）。以，对于 <span>some </span>这个html，DOM元素 span 会在第一次检测前就渲染完，在测期间，只有  会被渲染。<br> 3.另外一个有趣的现象就是在变更（脏值）检测期间，子组件视图的状态也会变化。我之前提到过， 有组件视图默认会用ChecksEnabled 初始化 , 但是对于那些使用 OnPush 策略的组件来说，ChecksEnabled 在第一次检测过后会被禁用。(列表中的操作 9)。<br><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (view.def.flags &amp; ViewFlags.OnPush) &#123;</span><br><span class="line">    view.state &amp;= ~ViewState.ChecksEnabled;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>仅当父级视图的绑定发生变化且子组件视图的脏值检测策略已使用初始化ChangeDetectionStrategy.OnPush，状态才会更新。<br>这意味着在接下来的脏值检测运行期间，该组件视图及其所有子组件将会跳过该检查。有关OnPush策的文档指出，只有在组件的绑定发生变化时才会检查该组件。所以要做到这一点，必须通过设ChecksEnabled来启用检查。这就是下面的代码所做的（操作2）：<br><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (compView.def.flags &amp; ViewFlags.OnPush) &#123;</span><br><span class="line">    compView.state |= ViewState.ChecksEnabled;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>最后，当前视图的变更（脏值）检测负责启动子视图的变更（脏值）检测（操作8）。如果是视图状态ChecksEnabled，则对此视图执行更改检测。这里是相关的代码：<br><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">viewState = view.state;</span><br><span class="line">...</span><br><span class="line"><span class="keyword">case</span> ViewAction.CheckAndUpdate:</span><br><span class="line">  <span class="keyword">if</span> ((viewState &amp; ViewState.ChecksEnabled) &amp;&amp;</span><br><span class="line">    (viewState &amp; (ViewState.Errored | ViewState.Destroyed)) === <span class="number">0</span>) &#123;</span><br><span class="line">    checkAndUpdateView(view);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>现在你明白了： 正是视图状态控制了是否对该视图以及它的子视图进行变更检测。那么问题来了—— 们能不能控制这个状态？ 结论是可以， 而这也是本文第二部分所要讲的。<br>有些生命周期钩子会在DOM更新前(3, 4, 5)调用， 而有的则会在之后(9)调用。所以, 如果你有下面组件层次： A-&gt; B -&gt; C, 这里是钩子调用以及绑定更新的顺序：<br><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">A: AfterContentInit</span><br><span class="line">A: AfterContentChecked</span><br><span class="line">A: Update bindings</span><br><span class="line">    B: AfterContentInit</span><br><span class="line">    B: AfterContentChecked</span><br><span class="line">    B: Update bindings</span><br><span class="line">        C: AfterContentInit</span><br><span class="line">        C: AfterContentChecked</span><br><span class="line">        C: Update bindings</span><br><span class="line">        C: AfterViewInit</span><br><span class="line">        C: AfterViewChecked</span><br><span class="line">    B: AfterViewInit</span><br><span class="line">    B: AfterViewChecked</span><br><span class="line">A: AfterViewInit</span><br><span class="line">A: AfterViewChecked</span><br></pre></td></tr></table></figure></p>
+<h3 id="探索含义"><a href="#探索含义" class="headerlink" title="探索含义"></a>探索含义</h3><p>假设我们有下面的组件树：<br><img src="/2018/11/08/angular-change-detection/component-tree.png" alt="变化树"><br>我们知道，一个组件对应一个视图。每个视图的状态都被初始化为 ViewState.ChecksEnabled，也就意味着在组件树上的每一个组件都将运行(变更)脏值检测。<br>假设我们想要禁用AComponent及其子项的脏值检测，通过设置 ViewState.ChecksEnabled为false是最简答的方式。但是直接改变状态在Angular中是底层操作，为此Angular提供了一些列公开方法。每个组件可以通过 ChangeDetectorRef标识来获取关联视图。 Angular文档定义了以下公共接口：<br><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> ChangeDetectorRef &#123;</span><br><span class="line">  markForCheck() : <span class="built_in">void</span></span><br><span class="line">  detach() : <span class="built_in">void</span></span><br><span class="line">  reattach() : <span class="built_in">void</span></span><br><span class="line"></span><br><span class="line">  detectChanges() : <span class="built_in">void</span></span><br><span class="line">  checkNoChanges() : <span class="built_in">void</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>让我们看看这可以为我们带来什么好处。</p>
+<h3 id="detach"><a href="#detach" class="headerlink" title="detach"></a>detach</h3><p>第一种允许我们操作状态的方法是detach，它可以简单地禁用对当前视图的脏值检测：<br><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">detach(): <span class="built_in">void</span> &#123; <span class="keyword">this</span>._view.state &amp;= ~ViewState.ChecksEnabled; &#125;</span><br></pre></td></tr></table></figure></p>
+<p>让我们看看它在代码中的应用：<br><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AComponent &#123;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> cd: ChangeDetectorRef</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>.cd.detach();</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>这确保了在接下来的变更检测中，从 AComponent 开始的左边分支会被跳过(橘黄色的组件不会被检测)<br><img src="/2018/11/08/angular-change-detection/detach-accomponent.png" alt="detach"><br>这里有两点需要注意—— 第一点就是虽然我们更改了 AComponent 的状态， 它的所有子组件同样不会被检查。 第二点是因为左边分支的组件没有进行变更检测， 在这些组件模板中的DOM 同样不会被更新。 这里有个小例子演示：<br><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span>(&#123;</span><br><span class="line">  selector: <span class="string">'a-comp'</span>,</span><br><span class="line">  template: <span class="string">`&lt;span&gt;See if I change: &#123;&#123;changed&#125;&#125;&lt;/span&gt;`</span></span><br><span class="line">&#125;)</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AComponent &#123;</span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> cd: ChangeDetectorRef</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>.changed = <span class="string">'false'</span>;</span><br><span class="line"></span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.cd.detach();</span><br><span class="line">      <span class="keyword">this</span>.changed = <span class="string">'true'</span>;</span><br><span class="line">    &#125;, <span class="number">2000</span>);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>组件第一次被检查的时候， span 会用文本 See if I change: false渲染。 2 秒后， 当属性changed更新为 true , span 中的文本并没有改变。 然而， 如果我们移除这行 this.cd.detech() 一切如常。</p>
+<h3 id="reattach"><a href="#reattach" class="headerlink" title="reattach"></a>reattach</h3><p>正如文章第一部分所述，如果输入属性发生变化，OnChanges就会被触发。这意味着一旦我们得知输入属性变化，我们就可以激活当前组件的检测器来运行脏值检测，并在下一轮关闭它。举个例子：<br><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AComponent &#123;</span><br><span class="line">  <span class="meta">@Input</span>() inputAProp;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> cd: ChangeDetectorRef</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>.cd.detach();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  ngOnChanges(values) &#123;</span><br><span class="line">    <span class="keyword">this</span>.cd.reattach();</span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.cd.detach();</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>reattach通过位运算简单的设置了 ViewState.ChecksEnabled<br><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reattach(): <span class="built_in">void</span> &#123; <span class="keyword">this</span>._view.state |= ViewState.ChecksEnabled; &#125;</span><br></pre></td></tr></table></figure></p>
+<p>这几乎等同于把ChangeDetectionStrategy设置为OnPush：在第一次更改检测运行后禁用检查，在父组件绑定属性变化时启用它，并在运行后禁用。</p>
+<p>请注意，OnChanges仅在禁用分支中最顶层的组件中触发，而不是在禁用的分支中的每个组件触发。</p>
+<h3 id="markForCheck"><a href="#markForCheck" class="headerlink" title="markForCheck"></a>markForCheck</h3><p>reattach方法仅作用于当前组件，对父级组件则不起作用。这意味着该reattach方法仅适用于禁用分支中最顶层的组件。<br>我们需要一种启用从当前组件到根组件检测的方法，markForCheck应用而生：<br><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> currView: ViewData|<span class="literal">null</span> = view;</span><br><span class="line"><span class="keyword">while</span> (currView) &#123;</span><br><span class="line">  <span class="keyword">if</span> (currView.def.flags &amp; ViewFlags.OnPush) &#123;</span><br><span class="line">    currView.state |= ViewState.ChecksEnabled;</span><br><span class="line">  &#125;</span><br><span class="line">  currView = currView.viewContainerParent || currView.parent;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>从源码的实现中我们可以看到，markForCheck向上逐层遍历并启用检测。</p>
+<p>这什么时候有用？ 就像 ngOnChanges 一样，即使组件使用 OnPush 策略，ngDoCheck生命周期钩子也会被触发。再次强调， 它只会在禁止检测分支的顶级组件上触发， 而不是禁止检测分支的所有组件。但是， 我们可以使用这个钩子进行自定义逻辑并把我们的组件标记为合乎变更检测周期运行条件。 由于 Angular 只会检查 对象引用， 我们可以实现对某些对象属性的脏检查：<br><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">Component(&#123;</span><br><span class="line">   ...,</span><br><span class="line">   changeDetection: ChangeDetectionStrategy.OnPush</span><br><span class="line">&#125;)</span><br><span class="line">MyComponent &#123;</span><br><span class="line">   <span class="meta">@Input</span>() items;</span><br><span class="line">   prevLength;</span><br><span class="line">   <span class="keyword">constructor</span>(<span class="params">cd: ChangeDetectorRef</span>) &#123;&#125;</span><br><span class="line"></span><br><span class="line">   ngOnInit() &#123;</span><br><span class="line">      <span class="keyword">this</span>.prevLength = <span class="keyword">this</span>.items.length;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   ngDoCheck() &#123;</span><br><span class="line">      <span class="keyword">if</span> (<span class="keyword">this</span>.items.length !== <span class="keyword">this</span>.prevLength) &#123;</span><br><span class="line">         <span class="keyword">this</span>.cd.markForCheck(); </span><br><span class="line">         <span class="keyword">this</span>.prevLenght = <span class="keyword">this</span>.items.length;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="detectChanges"><a href="#detectChanges" class="headerlink" title="detectChanges"></a>detectChanges</h3><p>使用detectChanges可以为当前组件及其所有子项运行一次脏值检测。此方法会忽略视图的状态，这意味着当前视图可能依旧保持禁用状态，并且不会对组件进行常规脏值检测。举个例子：<br><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> AComponent &#123;</span><br><span class="line">  <span class="meta">@Input</span>() inputAProp;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">constructor</span>(<span class="params"><span class="keyword">public</span> cd: ChangeDetectorRef</span>) &#123;</span><br><span class="line">    <span class="keyword">this</span>.cd.detach();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  ngOnChanges(values) &#123;</span><br><span class="line">    <span class="keyword">this</span>.cd.detectChanges();</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
+<p>即使脏值检测器依旧是detached，输入属性更改时DOM也会更新。</p>
+<h3 id="checkNoChanges"><a href="#checkNoChanges" class="headerlink" title="checkNoChanges"></a>checkNoChanges</h3><p>脏值检测的最后一个可用方法是确保在当前检测运行过程中不会有变化发生。基本上，它执行了列表中1,7,8操作，如果它发现了需要变更的绑定或者会引发DOM的更新，它都会抛出异常。<br>译者注：<br>1.脏值检测的底层实现在Angualr不同版本有些不同，本文第一部分基于Angular4.0.1，如果想了解Angular2.4.1的实现机制，请移步<a href="https://blog.angularindepth.com/everything-you-need-to-know-about-change-detection-in-angular-8006c51d206f" target="_blank" rel="noopener">stackoverflow</a></p>
+
+        
+            <div class="donate-container">
+    <div class="donate-button">
+        <button id="donate-button">赞赏</button>
+    </div>
+    <div class="donate-img-container hide" id="donate-img-container">
+        <img id="donate-img" src="" data-src="/img/donate.png">
+        <p> 感谢鼓励 </p>
+    </div>
+</div>
+        
+        <div id="comment-container">
+        </div>
+    </div>
+</div>
+    </div>
+</div>
+
+
+<footer class="footer">
+    <ul class="list-inline text-center">
+        
+        
+
+        
+
+        
+
+        
+
+        
+
+    </ul>
+    
+    <p>
+        <span>/</span>
+        
+        <span><a href="https://github.com/superermiao">@2018 superermiao</a></span>
+        <span>/</span>
+        
+    </p>
+    
+    <p>
+        <span id="busuanzi_container_site_pv">
+            <span id="busuanzi_value_site_pv"></span>PV
+        </span>
+        <span id="busuanzi_container_site_uv">
+            <span id="busuanzi_value_site_uv"></span>UV
+        </span>
+        Created By <a href="https://hexo.io/">Hexo</a>  Theme <a href="https://github.com/aircloud/hexo-theme-aircloud">AirCloud</a></p>
+</footer>
+
+
+
+
+</body>
+
+<script>
+    // We expose some of the variables needed by the front end
+    window.hexo_search_path = "search.json"
+    window.hexo_root = "/"
+    window.isPost = true
+</script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="/js/index.js"></script>
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<script src="/js/gitment.js"></script>
+<script>
+    var gitment = new Gitment({
+        id: 'angular的踩坑之旅-你应该知道angular中的变化检测机制',
+        owner: 'superermiao',
+        repo: 'https://github.com/superermiao/Comments',
+        oauth: {
+            client_id: 'e25e8915aa0bfb5a1dca',
+            client_secret: '9b7030c1fd53b5995082ce8f17c99916979ff7b1',
+        },
+    })
+    gitment.render('comment-container')
+</script>
+
+</html>
